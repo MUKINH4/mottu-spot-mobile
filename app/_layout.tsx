@@ -1,29 +1,19 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Home from "./index";
+import Motos from "./motos";
+import AddYard from "@/components/add-yard";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+const Tabs = createBottomTabNavigator();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    <Tabs.Navigator>
+      <Tabs.Screen name="index" component={Home} 
+      options={{headerRight: () => <AddYard />,
+      headerTitle: "MottuSpot"
+      }}
+      />
+      <Tabs.Screen name="motos" component={Motos} />
+    </Tabs.Navigator>
+  )
 }

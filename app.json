@@ -16,6 +16,9 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "config": {
+        "cleartextTraffic": true
+      },
       "edgeToEdgeEnabled": true
     },
     "web": {
