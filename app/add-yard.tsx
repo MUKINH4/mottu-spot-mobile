@@ -30,21 +30,25 @@ export default function AddYardScreen() {
       if (isNaN(numeroParsed)) {
         return Alert.alert("Erro", "O campo Número deve ser um valor numérico");
       }
-      const response = await addYard({nome, cep, logradouro, numero, bairro, cidade, estado, pais})
+      const response = await addYard({ nome, cep, logradouro, numero, bairro, cidade, estado, pais })
       navigation.goBack();
       return response;
-    } catch (error){
+    } catch (error) {
       console.log("Erro bosta: ", error)
     }
-    
+
   };
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'position'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100}
     >
-      <ScrollView contentContainerStyle={styles.form}>
+      <ScrollView
+        contentContainerStyle={[styles.form, { flexGrow: 1}]}
+        keyboardShouldPersistTaps="handled"
+      >
         <Text style={styles.title}>Adicionar Pátio</Text>
 
         <Text style={styles.label}>Nome</Text>

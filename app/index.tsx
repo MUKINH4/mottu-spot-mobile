@@ -27,7 +27,7 @@ export default function HomeScreen() {
       setData(response);
       await AsyncStorage.setItem('yards', JSON.stringify(response));
     } catch (error) {
-      console.error("Erro ao buscar dados:", error);
+      console.error(error);
     } finally {
       setRefreshing(false)
     }

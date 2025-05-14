@@ -3,7 +3,6 @@ import { api } from "./fetchData";
 
 export async function addYard(payload: AddYardDTO) {
   try {
-    // monta o corpo da requisição conforme o DTO
     const data = {
         nome: payload.nome,
         cep: payload.cep,
@@ -15,9 +14,8 @@ export async function addYard(payload: AddYardDTO) {
         pais: payload.pais
     };
 
-    // faz POST para o endpoint /patio
     const response = await api.post("/patio", data);
-    return response.data; // retorna o objeto criado
+    return response.data;
   } catch (error) {
     console.error("Erro ao adicionar pátio:", error);
     throw error;

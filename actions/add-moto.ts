@@ -10,11 +10,7 @@ export async function AddMoto(payload: AddMotoDTO){
         descricao: payload.descricao
     }
 
-    try {
-        const response = await api.post('/moto', data)
-        console.log(response);
-        return response;
-    } catch (error){
-        console.error(error);
-    }
+    const response = await api.post('/moto', data).catch(e => console.log(e.response.data.message))
+    return response;
+
 }

@@ -13,7 +13,7 @@ export const getYards = async () => {
     }
     return response.data.content;
   } catch (error: any) {
-    console.error("Erro ao buscar pátios:", error.message);
+    console.error("Erro ao buscar pátios:", error.response.data.message);
     throw error;
   }
 };
