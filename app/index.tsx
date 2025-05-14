@@ -1,26 +1,32 @@
 import { getYards } from "@/actions/fetchData";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { FlatList, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-export default function Home() {
+export default function HomeScreen() {
 
   const [refreshing, setRefreshing] = useState(false);
-
-  const navigation = useNavigation();
-
+  const navigation = useNavigation<any>();
   const [data, setData] = useState([]);
 
-  const onRefresh = () => {
-    setRefreshing(true)
-    fetchData();
-  }
+  // Carrega cache ao montar
+  useEffect(() => {
+    (async () => {
+      const cached = await AsyncStorage.getItem('yards');
+      if (cached) setData(JSON.parse(cached));
+      fetchData();
+    })();
+  }, []);
+
+  const onRefresh = () => { setRefreshing(true); fetchData(); };
 
   const fetchData = async () => {
     try {
       const response = await getYards();
       setData(response);
+      await AsyncStorage.setItem('yards', JSON.stringify(response));
     } catch (error) {
       console.error("Erro ao buscar dados:", error);
     } finally {
@@ -28,12 +34,15 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
+  // editar e excluir pátio
+  const handleEdit = (item: any) => navigation.navigate('edit-yard', { id: item.id });
+  const handleDelete = async (item: any) => {
+    // await deleteYard(item.id);
     fetchData();
-  }, []);
+  };
 
   const handlePress = (item: any) => {
-    navigation.navigate("motos", { patioNome: item.nome, patioId: item.id }); // Navegar para a tela de motos
+    navigation.navigate("motos-patio", { patioNome: item.nome, patioId: item.id });
   };
 
   const renderItem = ({ item }: { item: any }) => (
@@ -45,6 +54,14 @@ export default function Home() {
       <Text style={styles.cardDetails}>
         CEP: {item.endereco.cep}
       </Text>
+      <View style={styles.cardActions}>
+        <TouchableOpacity onPress={() => handleEdit(item)}>
+          <Ionicons name="pencil" size={20} color="#fff" style={styles.actionIcon} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleDelete(item)}>
+          <Ionicons name="trash" size={20} color="#fff" style={styles.actionIcon} />
+        </TouchableOpacity>
+      </View>
     </TouchableOpacity>
   );
 
@@ -59,7 +76,6 @@ export default function Home() {
         </TouchableOpacity>
       </View>
 
-      {/* Lista de pátios */}
       <FlatList
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#00A651"]} />
@@ -122,5 +138,13 @@ const styles = StyleSheet.create({
   cardDetails: {
     fontSize: 12,
     color: "#D9D9D9",
+  },
+  cardActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 8,
+  },
+  actionIcon: {
+    marginHorizontal: 8,
   },
 });
