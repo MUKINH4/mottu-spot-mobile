@@ -36,7 +36,6 @@ export default function MotosByPatioScreen({ route, navigation }: any) {
         }
     }
 
-    // editar e excluir moto
     const handleEdit = (item: any) => {
         navigation.navigate('edit-moto', { id: item.id });
     };

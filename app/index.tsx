@@ -11,7 +11,6 @@ export default function HomeScreen() {
   const navigation = useNavigation<any>();
   const [data, setData] = useState([]);
 
-  // Carrega cache ao montar
   useEffect(() => {
     (async () => {
       const cached = await AsyncStorage.getItem('yards');
@@ -34,10 +33,9 @@ export default function HomeScreen() {
     }
   };
 
-  // editar e excluir pátio
+
   const handleEdit = (item: any) => navigation.navigate('edit-yard', { id: item.id });
   const handleDelete = async (item: any) => {
-    // await deleteYard(item.id);
     fetchData();
   };
 
