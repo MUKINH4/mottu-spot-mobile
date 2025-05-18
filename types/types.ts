@@ -1,4 +1,4 @@
-export type AddYardDTO = {
+export type YardDTO = {
   nome: string;
   cep: string;
   logradouro: string;
@@ -11,9 +11,9 @@ export type AddYardDTO = {
 
 export type Status = "ATIVO" | "INATIVO"
 
-export type AddMotoDTO = {
+export type MotoDTO = {
     placa: string;
     descricao: string;
-    patioId: number;
+    patioId?: number;
     status: Status;
 }

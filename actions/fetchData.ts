@@ -1,8 +1,4 @@
-import axios from 'axios';
-
-export const api = axios.create({
-  baseURL: "http://localhost:8080",
-});
+import { api } from './api';
 
 export const getYards = async () => {
   try {

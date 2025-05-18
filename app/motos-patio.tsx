@@ -1,8 +1,10 @@
-import { api } from "@/actions/fetchData";
+import { api } from "@/actions/api";
+import { deleteMoto } from "@/actions/moto-crud";
+import { MotoDTO } from "@/types/types";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function MotosByPatioScreen({ route, navigation }: any) {
 
@@ -18,6 +20,14 @@ export default function MotosByPatioScreen({ route, navigation }: any) {
         })();
     }, [patioId]);
 
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            fetchData();
+        });
+
+        return unsubscribe;
+    }, [navigation, patioId]);
+
     const onRefresh = () => {
         setRefreshing(true)
         fetchData()
@@ -29,7 +39,8 @@ export default function MotosByPatioScreen({ route, navigation }: any) {
             const motos = response.data.motos;
             setData(motos);
             await AsyncStorage.setItem(`motos_${patioId}`, JSON.stringify(motos));
-        } catch (error) {
+        } catch (error: any) {
+            Alert.alert("Erro", error)
             console.log(error)
         } finally {
             setRefreshing(false)
@@ -37,11 +48,17 @@ export default function MotosByPatioScreen({ route, navigation }: any) {
     }
 
     const handleEdit = (item: any) => {
-        navigation.navigate('edit-moto', { id: item.id });
+        console.log(item)
+        navigation.navigate('edit-moto', { id: item.id, patioId: patioId });
     };
     const handleDelete = async (item: any) => {
-        // await deleteMoto(item.id);
-        fetchData();
+        try {
+            await deleteMoto(item.id);
+            Alert.alert("Sucesso", "Moto deletada com sucesso!");
+            fetchData();
+        } catch (error: any) {
+            Alert.alert("Erro", error.message || "Não foi possível deletar a moto. Tente novamente mais tarde.");
+        }
     };
 
 

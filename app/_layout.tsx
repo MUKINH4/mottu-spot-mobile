@@ -3,8 +3,11 @@ import { Feather, Fontisto } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { navigate } from "expo-router/build/global-state/routing";
+import React from "react";
 import AddMotoScreen from "./add-moto";
 import AddYardScreen from "./add-yard";
+import EditMotoScreen from "./edit-moto";
+import EditYardScreen from "./edit-yard";
 import HomeScreen from "./index";
 import MotosScreem from "./motos";
 import MotosByPatioScreen from "./motos-patio";
@@ -64,6 +67,8 @@ export default function RootLayout() {
       />
       <Stack.Screen name="add-yard" component={AddYardScreen} options={{ headerTitle: "Adicionar Pátio" }} />
       <Stack.Screen name="add-moto" component={AddMotoScreen} options={{ headerTitle: "Adicionar Moto" }} />
+      <Stack.Screen name="edit-yard" component={EditYardScreen} options={{ headerTitle: "Editar Pátio" }} />
+      <Stack.Screen name="edit-moto" component={EditMotoScreen} options={{ headerTitle: "Editar Moto" }} />
     </Stack.Navigator>
   );
 }

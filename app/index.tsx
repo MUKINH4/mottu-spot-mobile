@@ -1,9 +1,10 @@
 import { getYards } from "@/actions/fetchData";
+import { deleteYard } from "@/actions/yard-crud";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, RefreshControl, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function HomeScreen() {
 
@@ -35,7 +36,11 @@ export default function HomeScreen() {
 
 
   const handleEdit = (item: any) => navigation.navigate('edit-yard', { id: item.id });
+  
   const handleDelete = async (item: any) => {
+    const response = await deleteYard(item.id);
+    if (response.status !== 204) return Alert.alert("Erro", "Erro ao deletar pátio")
+    Alert.alert("Sucesso", "Pátio deletado com sucesso!")
     fetchData();
   };
 
