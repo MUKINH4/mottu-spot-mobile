@@ -1,6 +1,5 @@
 import { api } from "@/actions/api";
 import { deleteMoto } from "@/actions/moto-crud";
-import { MotoDTO } from "@/types/types";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
