@@ -13,7 +13,6 @@ export const addMoto = async (payload: MotoDTO) => {
     const response = await api.post("/moto", data);
     return response;
   } catch (error: any) {
-    console.error("Erro ao adicionar moto:", error);
 
     if (error.response) {
       // Erros retornados pela API
@@ -53,10 +52,7 @@ export const getMotoById = async (id: number) => {
   }
 };
 
-export const updateMoto = async (
-  id: number,
-  payload: MotoDTO
-) => {
+export const updateMoto = async (id: number, payload: MotoDTO) => {
   try {
     const response = await api.put(`/moto/${id}`, payload);
     return response.data;

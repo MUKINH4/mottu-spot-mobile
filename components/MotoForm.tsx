@@ -21,22 +21,25 @@ export default function MotoForm({ initialData, onSubmit, title, buttonText, pat
   const [status, setStatus] = useState<Status>(initialData?.status || "ATIVO");
 
   const handleSave = async () => {
+    if (!placa.trim() || !descricao.trim()) {
+      Alert.alert("Erro", "Por favor, preencha todos os campos.");
+      return;
+    }
     try {
       await onSubmit({ placa, descricao, status });
       Alert.alert("Sucesso", "Operação realizada com sucesso!");
-    } catch (error) {
-      Alert.alert("Erro", "Não foi possível realizar a operação.");
+    } catch (error: any) {
+      console.error(error)
+      Alert.alert("Erro", error.toString());
     }
   };
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView
         contentContainerStyle={styles.form}
-        keyboardShouldPersistTaps="handled"
       >
         {patioName != undefined ? <Text style={styles.title}>{title} no {patioName}</Text> : <Text style={styles.title}>{title}</Text>}
 
@@ -44,7 +47,8 @@ export default function MotoForm({ initialData, onSubmit, title, buttonText, pat
         <TextInput
           style={styles.input}
           value={placa}
-          onChangeText={setPlaca}
+          onChangeText={text => setPlaca(text.toUpperCase())}
+          autoCapitalize="characters"
           placeholder="ABC1E19"
           placeholderTextColor="#999"
         />

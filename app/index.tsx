@@ -36,12 +36,27 @@ export default function HomeScreen() {
 
 
   const handleEdit = (item: any) => navigation.navigate('edit-yard', { id: item.id });
-  
-  const handleDelete = async (item: any) => {
-    const response = await deleteYard(item.id);
-    if (response.status !== 204) return Alert.alert("Erro", "Erro ao deletar pátio")
-    Alert.alert("Sucesso", "Pátio deletado com sucesso!")
-    fetchData();
+
+  const handleDelete = (item: any) => {
+    Alert.alert(
+      "Confirmar",
+      "Tem certeza que deseja deletar este pátio?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Sim",
+          onPress: async () => {
+            const response = await deleteYard(item.id);
+            if (response.status !== 204) {
+              Alert.alert("Erro", "Erro ao deletar pátio");
+              return;
+            }
+            Alert.alert("Sucesso", "Pátio deletado com sucesso!");
+            fetchData();
+          },
+        },
+      ]
+    );
   };
 
   const handlePress = (item: any) => {

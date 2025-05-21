@@ -7,7 +7,7 @@ import { Alert, FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, Vi
 
 export default function MotosByPatioScreen({ route, navigation }: any) {
 
-    const { patioNome, patioId } = route.params;
+    const { patioNome, patioId } = route.params
     const [data, setData] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
 
@@ -47,22 +47,33 @@ export default function MotosByPatioScreen({ route, navigation }: any) {
     }
 
     const handleEdit = (item: any) => {
-        console.log(item)
         navigation.navigate('edit-moto', { id: item.id, patioId: patioId });
     };
-    const handleDelete = async (item: any) => {
-        try {
-            await deleteMoto(item.id);
-            Alert.alert("Sucesso", "Moto deletada com sucesso!");
-            fetchData();
-        } catch (error: any) {
-            Alert.alert("Erro", error.message || "Não foi possível deletar a moto. Tente novamente mais tarde.");
-        }
+    const handleDelete = (item: any) => {
+        Alert.alert(
+            "Confirmar",
+            "Tem certeza que deseja deletar esta moto?",
+            [
+                { text: "Cancelar", style: "cancel" },
+                {
+                    text: "Sim",
+                    onPress: async () => {
+                        try {
+                            await deleteMoto(item.id);
+                            Alert.alert("Sucesso", "Moto deletada com sucesso!");
+                            fetchData();
+                        } catch (error: any) {
+                            Alert.alert("Erro", error.message || "Não foi possível deletar a moto. Tente novamente mais tarde.");
+                        }
+                    },
+                },
+            ]
+        );
     };
 
 
     const renderItem = ({ item }: { item: any }) => (
-         <View style={styles.card}>
+        <View style={styles.card}>
             <Text style={styles.cardTitle}>Placa: {item.placa}</Text>
             <Text style={styles.cardDetails}>Descrição: {item.descricao}</Text>
             <View style={styles.statusContainer}>
@@ -97,9 +108,9 @@ export default function MotosByPatioScreen({ route, navigation }: any) {
                 ListEmptyComponent={() => (
                     <Text style={styles.emptyText}>
                         Ainda não há motos neste pátio
-                        
+
                     </Text>
-                    )}
+                )}
                 contentContainerStyle={styles.list}
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}></RefreshControl>

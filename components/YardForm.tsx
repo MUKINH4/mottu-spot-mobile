@@ -1,6 +1,8 @@
 import { YardDTO } from "@/types/types";
+import { useHeaderHeight } from "@react-navigation/elements";
 import React, { useState } from "react";
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { Header } from "react-native/Libraries/NewAppScreen";
 
 interface YardFormProps {
   initialData?: YardDTO;
@@ -20,13 +22,29 @@ export default function YardForm({ initialData, onSubmit, title, buttonText }: Y
   const [pais, setPais] = useState(initialData?.pais || "");
 
   const handleSave = async () => {
+    // Validação de campos obrigatórios
+    if (
+      !nome.trim() ||
+      !cep.trim() ||
+      !logradouro.trim() ||
+      !numero.trim() ||
+      !bairro.trim() ||
+      !cidade.trim() ||
+      !estado.trim() ||
+      !pais.trim()
+    ) {
+      Alert.alert("Erro", "Por favor, preencha todos os campos.");
+      return;
+    }
     try {
       await onSubmit({ nome, cep, logradouro, numero, bairro, cidade, estado, pais });
       Alert.alert("Sucesso", "Operação realizada com sucesso!");
-    } catch (error) {
-      Alert.alert("Erro", "Não foi possível realizar a operação.");
+    } catch (error: any) {
+      Alert.alert("Erro", error.toString());
     }
   };
+
+  const height = useHeaderHeight()
 
   return (
     <KeyboardAvoidingView
