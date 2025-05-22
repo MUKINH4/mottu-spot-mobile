@@ -15,7 +15,6 @@ import MotosByPatioScreen from "./motos-patio";
 const Tabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-// Bottom Tabs como contêiner principal
 function BottomTabs() {
   return (
     <Tabs.Navigator screenOptions={{

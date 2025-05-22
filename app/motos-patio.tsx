@@ -1,5 +1,6 @@
 import { api } from "@/actions/api";
 import { deleteMoto } from "@/actions/moto-crud";
+import FindDeviceButton from "@/components/find-moto-btn";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
@@ -74,18 +75,25 @@ export default function MotosByPatioScreen({ route, navigation }: any) {
 
     const renderItem = ({ item }: { item: any }) => (
         <View style={styles.card}>
-            <Text style={styles.cardTitle}>Placa: {item.placa}</Text>
-            <Text style={styles.cardDetails}>Descrição: {item.descricao}</Text>
-            <View style={styles.statusContainer}>
-                <Ionicons
-                    name="ellipse"
-                    size={16}
-                    color={item.status === "ATIVO" ? "#00A651" : "#FF0000"} // Verde para ativo, vermelho para inativo
-                    style={styles.statusIcon}
-                />
-                <Text style={[styles.statusText, { color: item.status === "ATIVO" ? "#00A651" : "#FF0000" }]}>
-                    {item.status === "ATIVO" ? "Disponível" : "Indisponível"}
-                </Text>
+            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                <View>
+                    <Text style={styles.cardTitle}>Placa: {item.placa}</Text>
+                    <Text style={styles.cardDetails}>Descrição: {item.descricao}</Text>
+                    <View style={styles.statusContainer}>
+                        <Ionicons
+                            name="ellipse"
+                            size={16}
+                            color={item.status === "ATIVO" ? "#00A651" : "#FF0000"} // Verde para ativo, vermelho para inativo
+                            style={styles.statusIcon}
+                        />
+                        <Text style={[styles.statusText, { color: item.status === "ATIVO" ? "#00A651" : "#FF0000" }]}>
+                            {item.status === "ATIVO" ? "Disponível" : "Indisponível"}
+                        </Text>
+                    </View>
+                </View>
+                <View>
+                    <FindDeviceButton onPress={() => console.log("Botão apertado!")}></FindDeviceButton>
+                </View>
             </View>
             <View style={styles.cardActions}>
                 <TouchableOpacity onPress={() => handleEdit(item)}>

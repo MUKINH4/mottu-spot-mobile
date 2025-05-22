@@ -22,7 +22,6 @@ export default function YardForm({ initialData, onSubmit, title, buttonText }: Y
   const [pais, setPais] = useState(initialData?.pais || "");
 
   const handleSave = async () => {
-    // Validação de campos obrigatórios
     if (
       !nome.trim() ||
       !cep.trim() ||
@@ -43,8 +42,6 @@ export default function YardForm({ initialData, onSubmit, title, buttonText }: Y
       Alert.alert("Erro", error.toString());
     }
   };
-
-  const height = useHeaderHeight()
 
   return (
     <KeyboardAvoidingView
